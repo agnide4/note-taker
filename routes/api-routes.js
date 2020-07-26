@@ -7,7 +7,7 @@
 //var tableData = require("../data/tableData");
 //var waitListData = require("../data/waitinglistData");
 const fs = require("fs")
-const data = require("../assets/db.json")
+const data = require("../public/assets/db.json")
 
 
 
