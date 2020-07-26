@@ -7,7 +7,7 @@
 //var tableData = require("../data/tableData");
 //var waitListData = require("../data/waitinglistData");
 const fs = require("fs")
-const data = require("../public/assets/db.json")
+const data = require("../db/db.json")
 
 
 
@@ -22,25 +22,31 @@ module.exports = function(app) {
   // (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table)
   // ---------------------------------------------------------------------------
 
-  app.get("/api/notes", function(req, res) {
-    fileToRead = fs.readFileSync(data, req.body)
+  app.get("/api/notes", function (req, res) {
+    fs.readFileSync("../db/db.json", function (fileToRead) {
     res.json(fileToRead);
+    })
+
   });
 
   
 
   app.post("/api/notes", function(req, res) {
-    newfile = fs.appendFile(data,req.body)
-    res.json(newfile);
+    fs.readFileSync("../db/db.json", "utf8", function(fileToRead){
+      fileToRead.push(req.body)
+      fs.writeFileSync("../db/db.json",fileToRead)
+    })
+    
+    res.json(data);
   });
 
   
 
   app.delete("/api/notes/:id", function(req, res) {
-    fileToRead = fs.readFileSync(data, req.body)
-    index = req.params.id
+    fileToRead = fs.readFileSync("../db/db.json", "utf8")
+    let index = req.params.id
     newfile = fileToRead.splice(index, 1)
-    fs.writeFile(data, newfile)
+    fs.writeFile("../db/db.json", newfile)
     res.json(data);
   });
 };
