@@ -7,7 +7,7 @@
 //var tableData = require("../data/tableData");
 //var waitListData = require("../data/waitinglistData");
 const fs = require("fs")
-const data = require("../db/db.json")
+const data = require("./db/db.json")
 
 
 
@@ -23,7 +23,7 @@ module.exports = function(app) {
   // ---------------------------------------------------------------------------
 
   app.get("/api/notes", function (req, res) {
-    fs.readFileSync("../db/db.json", function (fileToRead) {
+    fs.readFileSync("./db/db.json", function (fileToRead) {
     res.json(fileToRead);
     })
 
@@ -32,9 +32,9 @@ module.exports = function(app) {
   
 
   app.post("/api/notes", function(req, res) {
-    fs.readFileSync("../db/db.json", "utf8", function(fileToRead){
+    fs.readFileSync("./db/db.json", "utf8", function(fileToRead){
       fileToRead.push(req.body)
-      fs.writeFileSync("../db/db.json",fileToRead)
+      fs.writeFileSync("./db/db.json",fileToRead)
     })
     
     res.json(data);
@@ -43,10 +43,10 @@ module.exports = function(app) {
   
 
   app.delete("/api/notes/:id", function(req, res) {
-    fileToRead = fs.readFileSync("../db/db.json", "utf8")
+    fileToRead = fs.readFileSync("./db/db.json", "utf8")
     let index = req.params.id
     newfile = fileToRead.splice(index, 1)
-    fs.writeFile("../db/db.json", newfile)
+    fs.writeFile("./db/db.json", newfile)
     res.json(data);
   });
 };
