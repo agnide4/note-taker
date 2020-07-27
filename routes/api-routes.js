@@ -7,8 +7,8 @@
 //var tableData = require("../data/tableData");
 //var waitListData = require("../data/waitinglistData");
 const fs = require("fs")
-const data = require("./db/db.json")
-
+const data = require("../db/db.json")
+const path = require("path");
 
 
 // ===============================================================================
@@ -21,32 +21,35 @@ module.exports = function(app) {
   // In each of the below cases when a user visits a link
   // (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table)
   // ---------------------------------------------------------------------------
-
+  
   app.get("/api/notes", function (req, res) {
-    fs.readFileSync("./db/db.json", function (fileToRead) {
-    res.json(fileToRead);
+    let pnotes = fs.readFileSync("./db/db.json", "utf8")
+    res.json(JSON.parse(pnotes));
     })
 
-  });
-
-  
 
   app.post("/api/notes", function(req, res) {
-    fs.readFileSync("./db/db.json", "utf8", function(fileToRead){
-      fileToRead.push(req.body)
-      fs.writeFileSync("./db/db.json",fileToRead)
-    })
+      fs.readFileSync("../db/db.json", "utf8", function(fileToRead){
+        fileToRead.push(req.body)
+        fs.writeFileSync("../db/db.json",fileToRead)
+      })
+      
+      res.json(data);
+    });
+  
     
-    res.json(data);
-  });
+  
+  app.delete("/api/notes/:id", function(req, res) {
+      fileToRead = fs.readFileSync("../db/db.json", "utf8")
+      let index = req.params.id
+      newfile = fileToRead.splice(index, 1)
+      fs.writeFile("../db/db.json", newfile)
+      res.json(data);
+    });
+  
+  
+  };
 
   
 
-  app.delete("/api/notes/:id", function(req, res) {
-    fileToRead = fs.readFileSync("./db/db.json", "utf8")
-    let index = req.params.id
-    newfile = fileToRead.splice(index, 1)
-    fs.writeFile("./db/db.json", newfile)
-    res.json(data);
-  });
-};
+ 
