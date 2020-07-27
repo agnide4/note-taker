@@ -29,23 +29,22 @@ module.exports = function(app) {
 
 
   app.post("/api/notes", function(req, res) {
-      fs.readFileSync("../db/db.json", "utf8", function(fileToRead){
-        fileToRead.push(req.body)
-        fs.writeFileSync("../db/db.json",fileToRead)
-      })
+    let pnotes = (JSON.parse(fs.readFileSync("./db/db.json", "utf8")))
+    //upNote = (JSON.stringify(pnotes.push(req.body)))
+    fs.writeFileSync("./db/db.json",upNote)
       
-      res.json(data);
+    res.json(JSON.parse(upNote));
     });
   
     
   
-  app.delete("/api/notes/:id", function(req, res) {
-      fileToRead = fs.readFileSync("../db/db.json", "utf8")
+  /*app.delete("/api/notes/:id", function(req, res) {
+      fileToRead = fs.readFileSync("./db/db.json", "utf8")
       let index = req.params.id
       newfile = fileToRead.splice(index, 1)
-      fs.writeFile("../db/db.json", newfile)
+      fs.writeFile("./db/db.json", newfile)
       res.json(data);
-    });
+    });*/
   
   
   };
