@@ -30,7 +30,8 @@ module.exports = function(app) {
 
   app.post("/api/notes", function(req, res) {
     let pnotes = (JSON.parse(fs.readFileSync("./db/db.json", "utf8")))
-    //upNote = (JSON.stringify(pnotes.push(req.body)))
+    pnotes.push(req.body)
+    let upNote = (JSON.stringify(pnotes))
     fs.writeFileSync("./db/db.json",upNote)
       
     res.json(JSON.parse(upNote));
