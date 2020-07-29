@@ -32,20 +32,24 @@ module.exports = function(app) {
     let pnotes = (JSON.parse(fs.readFileSync("./db/db.json", "utf8")))
     pnotes.push(req.body)
     let upNote = (JSON.stringify(pnotes))
-    fs.writeFileSync("./db/db.json",upNote)
-      
+    fs.writeFileSync("./db/db.json",upNote)  
     res.json(JSON.parse(upNote));
     });
   
     
   
-  /*app.delete("/api/notes/:id", function(req, res) {
-      fileToRead = fs.readFileSync("./db/db.json", "utf8")
-      let index = req.params.id
-      newfile = fileToRead.splice(index, 1)
-      fs.writeFile("./db/db.json", newfile)
-      res.json(data);
-    });*/
+  app.delete("/api/notes/:id", function(req, res) {
+    let pnotes = (JSON.parse(fs.readFileSync("./db/db.json", "utf8")))
+    console.log(pnotes)
+    let index = req.params.id
+    console.log(index)
+    newfile = pnotes.splice(index, 1)
+    
+    upfile = JSON.stringify(newfile)
+    fs.writeFileSync("./db/db.json",upfile)
+    res.json(JSON.parse(upfile)); 
+ 
+    });
   
   
   };
