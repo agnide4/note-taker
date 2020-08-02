@@ -9,6 +9,7 @@
 const fs = require("fs")
 const data = require("../db/db.json")
 const path = require("path");
+const uuid = require("uuid");
 
 
 // ===============================================================================
@@ -29,9 +30,11 @@ module.exports = function(app) {
 
 
   app.post("/api/notes", function(req, res) {
+    id = uuid.v4()
     let pnotes = (JSON.parse(fs.readFileSync("./db/db.json", "utf8")))
-    pnotes.push(req.body)
+    pnotes.push({...req.body, id})
     let upNote = (JSON.stringify(pnotes))
+    
     fs.writeFileSync("./db/db.json",upNote)  
     res.json(JSON.parse(upNote));
     });
@@ -40,12 +43,20 @@ module.exports = function(app) {
   
   app.delete("/api/notes/:id", function(req, res) {
     let pnotes = (JSON.parse(fs.readFileSync("./db/db.json", "utf8")))
-    console.log(pnotes)
-    let index = req.params.id
-    console.log(index)
-    newfile = pnotes.splice(index, 1)
     
-    upfile = JSON.stringify(newfile)
+    let trk = req.params.id
+    let index = " ";
+    for (let i = 0; i<pnotes.length; i++){
+        if (pnotes[i].id === trk){
+          index = i;
+        }
+
+    }
+
+    console.log(index)
+    pnotes.splice(index, 1)
+    
+    let upfile = JSON.stringify(pnotes)
     fs.writeFileSync("./db/db.json",upfile)
     res.json(JSON.parse(upfile)); 
  
